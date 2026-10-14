@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "runs": [{
+    "id": "run-release-summary",
+    "name": "สรุป release notes",
+    "agent_name": "Docs Agent · Demo",
+    "status": "success",
+    "started_at": "2026-10-13T09:00:00+07:00",
+    "ended_at": "2026-10-13T09:00:12+07:00",
+    "spans": [
+      { "id": "root", "parent_id": null, "type": "agent", "name": "Prepare release summary", "status": "success", "started_at": "2026-10-13T09:00:00+07:00", "ended_at": "2026-10-13T09:00:12+07:00", "input": { "version": "0.8.0" }, "output": { "summary": "ปรับการค้นหาและแก้ไขการแสดงผลตาราง" }, "error": null },
+      { "id": "prompt", "parent_id": "root", "type": "prompt", "name": "Receive summary request", "status": "success", "started_at": "2026-10-13T09:00:00+07:00", "ended_at": "2026-10-13T09:00:01+07:00", "input": "สรุปการเปลี่ยนแปลงเวอร์ชัน 0.8.0 สำหรับทีมทดสอบ โดยใช้ข้อมูลจากไฟล์เท่านั้น", "output": null, "error": null },
+      { "id": "read", "parent_id": "root", "type": "tool", "name": "read_file · CHANGELOG.md", "status": "success", "started_at": "2026-10-13T09:00:01+07:00", "ended_at": "2026-10-13T09:00:03+07:00", "input": { "path": "demo/CHANGELOG.md" }, "output": { "text": "Added search highlighting. Fixed table overflow.", "exit_code": 0, "stderr": "" }, "error": null },
+      { "id": "compose", "parent_id": "root", "type": "model", "name": "Compose short summary · simulated", "status": "success", "started_at": "2026-10-13T09:00:03+07:00", "ended_at": "2026-10-13T09:00:11+07:00", "input": { "instruction": "สรุปสองประเด็น ใช้ภาษาไทย", "context": "Added search highlighting. Fixed table overflow." }, "output": "1. เพิ่มการเน้นคำค้นหา\n2. แก้ไขตารางที่ล้นหน้าจอ", "error": null },
+      { "id": "finish", "parent_id": "root", "type": "task", "name": "Validate summary", "status": "success", "started_at": "2026-10-13T09:00:11+07:00", "ended_at": "2026-10-13T09:00:12+07:00", "input": { "expected_points": 2 }, "output": { "valid": true }, "error": null }
+    ]
+  }]
+}

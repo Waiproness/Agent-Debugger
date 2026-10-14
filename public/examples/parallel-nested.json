@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "runs": [{
+    "id": "run-parallel-research",
+    "name": "รวบรวมข้อมูลคู่ขนาน · ยังไม่จบ",
+    "agent_name": "Research Agent · Demo",
+    "status": "running",
+    "started_at": "2026-10-13T11:30:00+07:00",
+    "ended_at": null,
+    "spans": [
+      { "id": "root", "parent_id": null, "type": "agent", "name": "Compare demo product specifications", "status": "running", "started_at": "2026-10-13T11:30:00+07:00", "ended_at": null, "input": { "products": ["DEMO-A", "DEMO-B"] }, "output": null, "error": null },
+      { "id": "prompt", "parent_id": "root", "type": "prompt", "name": "Receive comparison request", "status": "success", "started_at": "2026-10-13T11:30:00+07:00", "ended_at": "2026-10-13T11:30:01+07:00", "input": "เปรียบเทียบข้อมูลจำลอง DEMO-A และ DEMO-B จากไฟล์สเปกและผลทดสอบ", "output": null, "error": null },
+      { "id": "gather", "parent_id": "root", "type": "task", "name": "Gather specifications and benchmark in parallel", "status": "running", "started_at": "2026-10-13T11:30:01+07:00", "ended_at": null, "input": { "sources": ["specification", "benchmark"] }, "output": null, "error": null },
+      { "id": "spec", "parent_id": "gather", "type": "tool", "name": "read_specs · demo catalogue", "status": "success", "started_at": "2026-10-13T11:30:02+07:00", "ended_at": "2026-10-13T11:30:06+07:00", "input": { "path": "demo/specifications.json" }, "output": { "DEMO-A": { "memory_gb": 8 }, "DEMO-B": { "memory_gb": 16 } }, "error": null },
+      { "id": "benchmark", "parent_id": "gather", "type": "task", "name": "Load and normalize benchmark", "status": "running", "started_at": "2026-10-13T11:30:02+07:00", "ended_at": null, "input": { "dataset": "demo-benchmark" }, "output": null, "error": null },
+      { "id": "read-benchmark", "parent_id": "benchmark", "type": "tool", "name": "read_benchmark · pending", "status": "running", "started_at": "2026-10-13T11:30:03+07:00", "ended_at": null, "input": { "path": "demo/benchmark.csv" }, "output": null, "error": null }
+    ]
+  }]
+}

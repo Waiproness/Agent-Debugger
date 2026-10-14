@@ -1,0 +1,1156 @@
+{
+  "status": "PASS",
+  "nativePicker": "NOT TESTED",
+  "nativeConfirm": "NOT TESTED",
+  "browser": {
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
+    "platform": "Win32",
+    "logicalCpus": 11,
+    "visibility": "visible"
+  },
+  "roundtrip": {
+    "download": "agent-debugger-workspace-1791952041889.json",
+    "bytes": 5716,
+    "sha256": "c10584944286899b1f6749e7f19ce54a6c8f7a4a44d46d16bc10018b5d5e551e",
+    "runs": 3,
+    "spanCounts": [
+      5,
+      4,
+      6
+    ],
+    "allFieldsEqual": true,
+    "importMechanism": "actual download bytes through synthetic File/DataTransfer",
+    "nativePicker": false
+  },
+  "helper": [
+    {
+      "spans": 1000,
+      "label": "parse + validation",
+      "warmups": 1,
+      "rounds": 5,
+      "ms": [
+        8.300000011920929,
+        9.5,
+        9.800000011920929,
+        7.5,
+        7.099999964237213
+      ]
+    },
+    {
+      "spans": 1000,
+      "label": "parent depths",
+      "warmups": 1,
+      "rounds": 5,
+      "ms": [
+        0.30000001192092896,
+        0.10000002384185791,
+        0.5999999642372131,
+        0.30000001192092896,
+        0.10000002384185791
+      ]
+    },
+    {
+      "spans": 1000,
+      "label": "sorted search index",
+      "warmups": 1,
+      "rounds": 5,
+      "ms": [
+        4.300000011920929,
+        3.899999976158142,
+        4.5,
+        4.700000047683716,
+        3.399999976158142
+      ]
+    },
+    {
+      "spans": 1000,
+      "label": "search filter",
+      "warmups": 1,
+      "rounds": 5,
+      "ms": [
+        0.2999999523162842,
+        0.10000002384185791,
+        0.19999998807907104,
+        0.09999996423721313,
+        0.20000004768371582
+      ]
+    },
+    {
+      "spans": 1000,
+      "label": "compare selected spans",
+      "warmups": 1,
+      "rounds": 5,
+      "ms": [
+        0,
+        0,
+        0,
+        0.10000002384185791,
+        0
+      ]
+    },
+    {
+      "spans": 1000,
+      "label": "timeline recordedEnd",
+      "warmups": 1,
+      "rounds": 5,
+      "ms": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "spans": 10000,
+      "label": "parse + validation",
+      "warmups": 1,
+      "rounds": 5,
+      "ms": [
+        75.5,
+        86.89999997615814,
+        60.69999998807907,
+        65.19999998807907,
+        56.60000002384186
+      ]
+    },
+    {
+      "spans": 10000,
+      "label": "parent depths",
+      "warmups": 1,
+      "rounds": 5,
+      "ms": [
+        1.100000023841858,
+        1,
+        1.300000011920929,
+        1.300000011920929,
+        1.199999988079071
+      ]
+    },
+    {
+      "spans": 10000,
+      "label": "sorted search index",
+      "warmups": 1,
+      "rounds": 5,
+      "ms": [
+        40.10000002384186,
+        31.5,
+        35.30000001192093,
+        35.30000001192093,
+        38.89999997615814
+      ]
+    },
+    {
+      "spans": 10000,
+      "label": "search filter",
+      "warmups": 1,
+      "rounds": 5,
+      "ms": [
+        1.5,
+        1.899999976158142,
+        1.699999988079071,
+        1.399999976158142,
+        1.2000000476837158
+      ]
+    },
+    {
+      "spans": 10000,
+      "label": "compare selected spans",
+      "warmups": 1,
+      "rounds": 5,
+      "ms": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "spans": 10000,
+      "label": "timeline recordedEnd",
+      "warmups": 1,
+      "rounds": 5,
+      "ms": [
+        0,
+        0,
+        0.09999996423721313,
+        0,
+        0
+      ]
+    }
+  ],
+  "ui": [
+    {
+      "label": "downloaded-file import + save",
+      "spans": 5,
+      "domReadyMs": 27,
+      "layoutAndTwoFramesMs": 9,
+      "totalMs": 36,
+      "visibilityStart": "visible",
+      "visibilityEnd": "visible",
+      "twoRaf": true,
+      "timingUsable": true
+    },
+    {
+      "label": "large-file import + save",
+      "spans": 1000,
+      "domReadyMs": 240.19999998807907,
+      "layoutAndTwoFramesMs": 1558.199999988079,
+      "totalMs": 1798.3999999761581,
+      "visibilityStart": "visible",
+      "visibilityEnd": "visible",
+      "twoRaf": true,
+      "timingUsable": true
+    },
+    {
+      "label": "large-file import + save",
+      "spans": 10000,
+      "domReadyMs": 2993.5,
+      "layoutAndTwoFramesMs": 996.8999999761581,
+      "totalMs": 3990.399999976158,
+      "visibilityStart": "visible",
+      "visibilityEnd": "visible",
+      "twoRaf": true,
+      "timingUsable": true
+    },
+    {
+      "label": "timeline remount",
+      "spans": 1000,
+      "round": 1,
+      "domReadyMs": 207.80000001192093,
+      "layoutAndTwoFramesMs": 1808.199999988079,
+      "totalMs": 2016,
+      "visibilityStart": "visible",
+      "visibilityEnd": "visible",
+      "twoRaf": true,
+      "timingUsable": true
+    },
+    {
+      "label": "timeline remount",
+      "spans": 10000,
+      "round": 1,
+      "domReadyMs": 738.2999999523163,
+      "layoutAndTwoFramesMs": 2272.300000011921,
+      "totalMs": 3010.599999964237,
+      "visibilityStart": "visible",
+      "visibilityEnd": "visible",
+      "twoRaf": true,
+      "timingUsable": true
+    },
+    {
+      "label": "timeline remount",
+      "spans": 1000,
+      "round": 2,
+      "domReadyMs": 189.30000001192093,
+      "layoutAndTwoFramesMs": 826.5,
+      "totalMs": 1015.8000000119209,
+      "visibilityStart": "visible",
+      "visibilityEnd": "visible",
+      "twoRaf": true,
+      "timingUsable": true
+    },
+    {
+      "label": "timeline remount",
+      "spans": 10000,
+      "round": 2,
+      "domReadyMs": 789.9000000357628,
+      "layoutAndTwoFramesMs": 2226.2999999523163,
+      "totalMs": 3016.199999988079,
+      "visibilityStart": "visible",
+      "visibilityEnd": "visible",
+      "twoRaf": true,
+      "timingUsable": true
+    },
+    {
+      "label": "timeline remount",
+      "spans": 1000,
+      "round": 3,
+      "domReadyMs": 174.80000001192093,
+      "layoutAndTwoFramesMs": 1830.199999988079,
+      "totalMs": 2005,
+      "visibilityStart": "visible",
+      "visibilityEnd": "visible",
+      "twoRaf": true,
+      "timingUsable": true
+    },
+    {
+      "label": "timeline remount",
+      "spans": 10000,
+      "round": 3,
+      "domReadyMs": 714.3000000119209,
+      "layoutAndTwoFramesMs": 2396.400000035763,
+      "totalMs": 3110.7000000476837,
+      "visibilityStart": "visible",
+      "visibilityEnd": "visible",
+      "twoRaf": true,
+      "timingUsable": true
+    },
+    {
+      "label": "search input",
+      "spans": 1000,
+      "round": 1,
+      "domReadyMs": 13.100000023841858,
+      "layoutAndTwoFramesMs": 734.3999999761581,
+      "totalMs": 747.5,
+      "visibilityStart": "visible",
+      "visibilityEnd": "visible",
+      "twoRaf": true,
+      "timingUsable": true
+    },
+    {
+      "label": "select filtered step",
+      "spans": 1000,
+      "round": 1,
+      "domReadyMs": 2,
+      "layoutAndTwoFramesMs": 1014.2000000476837,
+      "totalMs": 1016.2000000476837,
+      "visibilityStart": "visible",
+      "visibilityEnd": "visible",
+      "twoRaf": true,
+      "timingUsable": true
+    },
+    {
+      "label": "clear search/full timeline",
+      "spans": 1000,
+      "round": 1,
+      "domReadyMs": 73.10000002384186,
+      "layoutAndTwoFramesMs": 1959.8999999761581,
+      "totalMs": 2033,
+      "visibilityStart": "visible",
+      "visibilityEnd": "visible",
+      "twoRaf": true,
+      "timingUsable": true
+    },
+    {
+      "label": "search input",
+      "spans": 1000,
+      "round": 2,
+      "domReadyMs": 16.5,
+      "layoutAndTwoFramesMs": 1983.300000011921,
+      "totalMs": 1999.800000011921,
+      "visibilityStart": "visible",
+      "visibilityEnd": "visible",
+      "twoRaf": true,
+      "timingUsable": true
+    },
+    {
+      "label": "select filtered step",
+      "spans": 1000,
+      "round": 2,
+      "domReadyMs": 1.800000011920929,
+      "layoutAndTwoFramesMs": 959.3000000119209,
+      "totalMs": 961.1000000238419,
+      "visibilityStart": "visible",
+      "visibilityEnd": "visible",
+      "twoRaf": true,
+      "timingUsable": true
+    },
+    {
+      "label": "clear search/full timeline",
+      "spans": 1000,
+      "round": 2,
+      "domReadyMs": 70,
+      "layoutAndTwoFramesMs": 1946.800000011921,
+      "totalMs": 2016.800000011921,
+      "visibilityStart": "visible",
+      "visibilityEnd": "visible",
+      "twoRaf": false,
+      "timingUsable": false
+    },
+    {
+      "label": "search input",
+      "spans": 1000,
+      "round": 3,
+      "domReadyMs": 13.299999952316284,
+      "layoutAndTwoFramesMs": 996.3000000119209,
+      "totalMs": 1009.5999999642372,
+      "visibilityStart": "visible",
+      "visibilityEnd": "visible",
+      "twoRaf": true,
+      "timingUsable": true
+    },
+    {
+      "label": "select filtered step",
+      "spans": 1000,
+      "round": 3,
+      "domReadyMs": 1.600000023841858,
+      "layoutAndTwoFramesMs": 1198.2999999523163,
+      "totalMs": 1199.8999999761581,
+      "visibilityStart": "visible",
+      "visibilityEnd": "visible",
+      "twoRaf": true,
+      "timingUsable": true
+    },
+    {
+      "label": "clear search/full timeline",
+      "spans": 1000,
+      "round": 3,
+      "domReadyMs": 92.60000002384186,
+      "layoutAndTwoFramesMs": 1935.0999999642372,
+      "totalMs": 2027.699999988079,
+      "visibilityStart": "visible",
+      "visibilityEnd": "visible",
+      "twoRaf": true,
+      "timingUsable": true
+    },
+    {
+      "label": "search input",
+      "spans": 1000,
+      "round": 4,
+      "domReadyMs": 12,
+      "layoutAndTwoFramesMs": 1993,
+      "totalMs": 2005,
+      "visibilityStart": "visible",
+      "visibilityEnd": "visible",
+      "twoRaf": true,
+      "timingUsable": true
+    },
+    {
+      "label": "select filtered step",
+      "spans": 1000,
+      "round": 4,
+      "domReadyMs": 1.199999988079071,
+      "layoutAndTwoFramesMs": 1470.5,
+      "totalMs": 1471.699999988079,
+      "visibilityStart": "visible",
+      "visibilityEnd": "visible",
+      "twoRaf": true,
+      "timingUsable": true
+    },
+    {
+      "label": "clear search/full timeline",
+      "spans": 1000,
+      "round": 4,
+      "domReadyMs": 56.30000001192093,
+      "layoutAndTwoFramesMs": 1947.8999999761581,
+      "totalMs": 2004.199999988079,
+      "visibilityStart": "visible",
+      "visibilityEnd": "visible",
+      "twoRaf": false,
+      "timingUsable": false
+    },
+    {
+      "label": "search input",
+      "spans": 1000,
+      "round": 5,
+      "domReadyMs": 13,
+      "layoutAndTwoFramesMs": 985.8999999761581,
+      "totalMs": 998.8999999761581,
+      "visibilityStart": "visible",
+      "visibilityEnd": "visible",
+      "twoRaf": true,
+      "timingUsable": true
+    },
+    {
+      "label": "select filtered step",
+      "spans": 1000,
+      "round": 5,
+      "domReadyMs": 2,
+      "layoutAndTwoFramesMs": 1997.800000011921,
+      "totalMs": 1999.800000011921,
+      "visibilityStart": "visible",
+      "visibilityEnd": "visible",
+      "twoRaf": true,
+      "timingUsable": true
+    },
+    {
+      "label": "clear search/full timeline",
+      "spans": 1000,
+      "round": 5,
+      "domReadyMs": 51.60000002384186,
+      "layoutAndTwoFramesMs": 1953.699999988079,
+      "totalMs": 2005.300000011921,
+      "visibilityStart": "visible",
+      "visibilityEnd": "visible",
+      "twoRaf": true,
+      "timingUsable": true
+    },
+    {
+      "label": "search input",
+      "spans": 10000,
+      "round": 1,
+      "domReadyMs": 132.30000001192093,
+      "layoutAndTwoFramesMs": 868.8000000119209,
+      "totalMs": 1001.1000000238419,
+      "visibilityStart": "visible",
+      "visibilityEnd": "visible",
+      "twoRaf": true,
+      "timingUsable": true
+    },
+    {
+      "label": "select filtered step",
+      "spans": 10000,
+      "round": 1,
+      "domReadyMs": 2.800000011920929,
+      "layoutAndTwoFramesMs": 1998.300000011921,
+      "totalMs": 2001.1000000238419,
+      "visibilityStart": "visible",
+      "visibilityEnd": "visible",
+      "twoRaf": true,
+      "timingUsable": true
+    },
+    {
+      "label": "clear search/full timeline",
+      "spans": 10000,
+      "round": 1,
+      "domReadyMs": 774.1000000238419,
+      "layoutAndTwoFramesMs": 3235.899999976158,
+      "totalMs": 4010,
+      "visibilityStart": "visible",
+      "visibilityEnd": "visible",
+      "twoRaf": false,
+      "timingUsable": false
+    },
+    {
+      "label": "search input",
+      "spans": 10000,
+      "round": 2,
+      "domReadyMs": 135.60000002384186,
+      "layoutAndTwoFramesMs": 864.8999999761581,
+      "totalMs": 1000.5,
+      "visibilityStart": "visible",
+      "visibilityEnd": "visible",
+      "twoRaf": true,
+      "timingUsable": true
+    },
+    {
+      "label": "select filtered step",
+      "spans": 10000,
+      "round": 2,
+      "domReadyMs": 2.599999964237213,
+      "layoutAndTwoFramesMs": 2002.5,
+      "totalMs": 2005.0999999642372,
+      "visibilityStart": "visible",
+      "visibilityEnd": "visible",
+      "twoRaf": true,
+      "timingUsable": true
+    },
+    {
+      "label": "clear search/full timeline",
+      "spans": 10000,
+      "round": 2,
+      "domReadyMs": 855.3999999761581,
+      "layoutAndTwoFramesMs": 3149.600000023842,
+      "totalMs": 4005,
+      "visibilityStart": "visible",
+      "visibilityEnd": "visible",
+      "twoRaf": true,
+      "timingUsable": true
+    },
+    {
+      "label": "search input",
+      "spans": 10000,
+      "round": 3,
+      "domReadyMs": 141.9000000357628,
+      "layoutAndTwoFramesMs": 1863.5,
+      "totalMs": 2005.4000000357628,
+      "visibilityStart": "visible",
+      "visibilityEnd": "visible",
+      "twoRaf": true,
+      "timingUsable": true
+    },
+    {
+      "label": "select filtered step",
+      "spans": 10000,
+      "round": 3,
+      "domReadyMs": 3,
+      "layoutAndTwoFramesMs": 2007.5999999642372,
+      "totalMs": 2010.5999999642372,
+      "visibilityStart": "visible",
+      "visibilityEnd": "visible",
+      "twoRaf": true,
+      "timingUsable": true
+    },
+    {
+      "label": "clear search/full timeline",
+      "spans": 10000,
+      "round": 3,
+      "domReadyMs": 815.0999999642372,
+      "layoutAndTwoFramesMs": 3190.100000023842,
+      "totalMs": 4005.199999988079,
+      "visibilityStart": "visible",
+      "visibilityEnd": "visible",
+      "twoRaf": true,
+      "timingUsable": true
+    },
+    {
+      "label": "search input",
+      "spans": 10000,
+      "round": 4,
+      "domReadyMs": 121.40000003576279,
+      "layoutAndTwoFramesMs": 1889.2999999523163,
+      "totalMs": 2010.699999988079,
+      "visibilityStart": "visible",
+      "visibilityEnd": "visible",
+      "twoRaf": true,
+      "timingUsable": true
+    },
+    {
+      "label": "select filtered step",
+      "spans": 10000,
+      "round": 4,
+      "domReadyMs": 1.899999976158142,
+      "layoutAndTwoFramesMs": 1984.6000000238419,
+      "totalMs": 1986.5,
+      "visibilityStart": "visible",
+      "visibilityEnd": "visible",
+      "twoRaf": true,
+      "timingUsable": true
+    },
+    {
+      "label": "clear search/full timeline",
+      "spans": 10000,
+      "round": 4,
+      "domReadyMs": 825.3000000119209,
+      "layoutAndTwoFramesMs": 3184.5,
+      "totalMs": 4009.800000011921,
+      "visibilityStart": "visible",
+      "visibilityEnd": "visible",
+      "twoRaf": false,
+      "timingUsable": false
+    },
+    {
+      "label": "search input",
+      "spans": 10000,
+      "round": 5,
+      "domReadyMs": 129,
+      "layoutAndTwoFramesMs": 864,
+      "totalMs": 993,
+      "visibilityStart": "visible",
+      "visibilityEnd": "visible",
+      "twoRaf": true,
+      "timingUsable": true
+    },
+    {
+      "label": "select filtered step",
+      "spans": 10000,
+      "round": 5,
+      "domReadyMs": 2.800000011920929,
+      "layoutAndTwoFramesMs": 2006.5,
+      "totalMs": 2009.300000011921,
+      "visibilityStart": "visible",
+      "visibilityEnd": "visible",
+      "twoRaf": false,
+      "timingUsable": false
+    },
+    {
+      "label": "clear search/full timeline",
+      "spans": 10000,
+      "round": 5,
+      "domReadyMs": 826.6999999880791,
+      "layoutAndTwoFramesMs": 2191.300000011921,
+      "totalMs": 3018,
+      "visibilityStart": "visible",
+      "visibilityEnd": "visible",
+      "twoRaf": true,
+      "timingUsable": true
+    },
+    {
+      "label": "enter comparison",
+      "domReadyMs": 446.69999998807907,
+      "layoutAndTwoFramesMs": 1558.1000000238419,
+      "totalMs": 2004.800000011921,
+      "visibilityStart": "visible",
+      "visibilityEnd": "visible",
+      "twoRaf": true,
+      "timingUsable": true
+    },
+    {
+      "label": "choose comparison run A",
+      "spans": 1000,
+      "domReadyMs": 524.5,
+      "layoutAndTwoFramesMs": 1475.6000000238419,
+      "totalMs": 2000.1000000238419,
+      "visibilityStart": "visible",
+      "visibilityEnd": "visible",
+      "twoRaf": true,
+      "timingUsable": true
+    },
+    {
+      "label": "choose comparison run B",
+      "spans": 10000,
+      "domReadyMs": 1058.800000011921,
+      "layoutAndTwoFramesMs": 1957,
+      "totalMs": 3015.800000011921,
+      "visibilityStart": "visible",
+      "visibilityEnd": "visible",
+      "twoRaf": true,
+      "timingUsable": true
+    },
+    {
+      "label": "choose comparison step B",
+      "spans": 10000,
+      "round": 1,
+      "domReadyMs": 453.19999998807907,
+      "layoutAndTwoFramesMs": 1098.5,
+      "totalMs": 1551.699999988079,
+      "visibilityStart": "visible",
+      "visibilityEnd": "visible",
+      "twoRaf": true,
+      "timingUsable": true
+    },
+    {
+      "label": "choose comparison step B",
+      "spans": 10000,
+      "round": 2,
+      "domReadyMs": 490.10000002384186,
+      "layoutAndTwoFramesMs": 991.8000000119209,
+      "totalMs": 1481.9000000357628,
+      "visibilityStart": "visible",
+      "visibilityEnd": "visible",
+      "twoRaf": true,
+      "timingUsable": true
+    },
+    {
+      "label": "choose comparison step B",
+      "spans": 10000,
+      "round": 3,
+      "domReadyMs": 577.3000000119209,
+      "layoutAndTwoFramesMs": 935.6999999880791,
+      "totalMs": 1513,
+      "visibilityStart": "visible",
+      "visibilityEnd": "visible",
+      "twoRaf": true,
+      "timingUsable": true
+    },
+    {
+      "label": "choose comparison step B",
+      "spans": 10000,
+      "round": 4,
+      "domReadyMs": 616.2999999523163,
+      "layoutAndTwoFramesMs": 779.1000000238419,
+      "totalMs": 1395.3999999761581,
+      "visibilityStart": "visible",
+      "visibilityEnd": "visible",
+      "twoRaf": true,
+      "timingUsable": true
+    },
+    {
+      "label": "choose comparison step B",
+      "spans": 10000,
+      "round": 5,
+      "domReadyMs": 478,
+      "layoutAndTwoFramesMs": 1042.5,
+      "totalMs": 1520.5,
+      "visibilityStart": "visible",
+      "visibilityEnd": "visible",
+      "twoRaf": true,
+      "timingUsable": true
+    }
+  ],
+  "checks": [
+    "Fresh QA origin starts empty",
+    "Downloaded JSON re-imported into empty QA: all 3 runs/15 spans and every field equal",
+    "Real reload after re-import preserves all fields and run order",
+    "Imported/saved/rendered 1000 valid spans",
+    "Imported/saved/rendered 10000 valid spans",
+    "Search/selection/clear 1000 spans completed for 5 rounds",
+    "Search/selection/clear 10000 spans completed for 5 rounds",
+    "Comparison of 1000/10000 spans: explicit choices, 1001/10001 options, +9000 count",
+    "Return to single preserves selected large-run step"
+  ],
+  "timingMethod": {
+    "clock": "performance.now() in real browser; no tool-call duration used",
+    "helpers": "1 warmup + 5 measured rounds; synchronous helper computation only",
+    "domReady": "synthetic event dispatch to expected DOM observed by MutationObserver; includes app computation/React commit/DOM checks, and import includes real IndexedDB save; no OS picker or physical typing time",
+    "render": "pure React render and paint not isolated",
+    "frames": "force bounding rect, then two requestAnimationFrame callbacks, each with 1000ms safety fallback; 5 of 47 operations missed at least one callback",
+    "limitation": "Document reported visible, but native browser window was minimized before QA. Callbacks often arrived near 1 second boundaries. Frame intervals and totalMs are raw diagnostic values, not verified paint/input latency. timingUsable is only the visibility-and-callback gate used by the harness."
+  },
+  "machine": {
+    "os": "Windows 10.0.26200 x64",
+    "cpu": "11th Gen Intel(R) Core(TM) i5-11400H @ 2.70GHz",
+    "logicalCpus": 12,
+    "totalMemoryGiB": 31.729293823242188,
+    "browser": "Brave Browser extension, Chromium 155 from userAgent; full Brave version not inspected"
+  },
+  "fixtures": [
+    {
+      "spans": 1000,
+      "bytes": 324552
+    },
+    {
+      "spans": 10000,
+      "bytes": 3294284
+    }
+  ],
+  "finalChecks": {
+    "tests": 120,
+    "pass": 120,
+    "fail": 0,
+    "skip": 0,
+    "typecheck": "PASS",
+    "build": "PASS",
+    "productionCodeChanged": false,
+    "afterQaCleanup": true
+  },
+  "helperSummary": [
+    {
+      "spans": 1000,
+      "label": "parse + validation",
+      "rounds": 5,
+      "median": 8.300000011920929,
+      "min": 7.099999964237213,
+      "max": 9.800000011920929
+    },
+    {
+      "spans": 1000,
+      "label": "parent depths",
+      "rounds": 5,
+      "median": 0.30000001192092896,
+      "min": 0.10000002384185791,
+      "max": 0.5999999642372131
+    },
+    {
+      "spans": 1000,
+      "label": "sorted search index",
+      "rounds": 5,
+      "median": 4.300000011920929,
+      "min": 3.399999976158142,
+      "max": 4.700000047683716
+    },
+    {
+      "spans": 1000,
+      "label": "search filter",
+      "rounds": 5,
+      "median": 0.19999998807907104,
+      "min": 0.09999996423721313,
+      "max": 0.2999999523162842
+    },
+    {
+      "spans": 1000,
+      "label": "compare selected spans",
+      "rounds": 5,
+      "median": 0,
+      "min": 0,
+      "max": 0.10000002384185791
+    },
+    {
+      "spans": 1000,
+      "label": "timeline recordedEnd",
+      "rounds": 5,
+      "median": 0,
+      "min": 0,
+      "max": 0
+    },
+    {
+      "spans": 10000,
+      "label": "parse + validation",
+      "rounds": 5,
+      "median": 65.19999998807907,
+      "min": 56.60000002384186,
+      "max": 86.89999997615814
+    },
+    {
+      "spans": 10000,
+      "label": "parent depths",
+      "rounds": 5,
+      "median": 1.199999988079071,
+      "min": 1,
+      "max": 1.300000011920929
+    },
+    {
+      "spans": 10000,
+      "label": "sorted search index",
+      "rounds": 5,
+      "median": 35.30000001192093,
+      "min": 31.5,
+      "max": 40.10000002384186
+    },
+    {
+      "spans": 10000,
+      "label": "search filter",
+      "rounds": 5,
+      "median": 1.5,
+      "min": 1.2000000476837158,
+      "max": 1.899999976158142
+    },
+    {
+      "spans": 10000,
+      "label": "compare selected spans",
+      "rounds": 5,
+      "median": 0,
+      "min": 0,
+      "max": 0
+    },
+    {
+      "spans": 10000,
+      "label": "timeline recordedEnd",
+      "rounds": 5,
+      "median": 0,
+      "min": 0,
+      "max": 0.09999996423721313
+    }
+  ],
+  "uiSummary": [
+    {
+      "label": "downloaded-file import + save",
+      "spans": 5,
+      "domReady": {
+        "rounds": 1,
+        "median": 27,
+        "min": 27,
+        "max": 27
+      },
+      "framesValid": 1,
+      "totalValid": {
+        "rounds": 1,
+        "median": 36,
+        "min": 36,
+        "max": 36
+      }
+    },
+    {
+      "label": "large-file import + save",
+      "spans": 1000,
+      "domReady": {
+        "rounds": 1,
+        "median": 240.19999998807907,
+        "min": 240.19999998807907,
+        "max": 240.19999998807907
+      },
+      "framesValid": 1,
+      "totalValid": {
+        "rounds": 1,
+        "median": 1798.3999999761581,
+        "min": 1798.3999999761581,
+        "max": 1798.3999999761581
+      }
+    },
+    {
+      "label": "large-file import + save",
+      "spans": 10000,
+      "domReady": {
+        "rounds": 1,
+        "median": 2993.5,
+        "min": 2993.5,
+        "max": 2993.5
+      },
+      "framesValid": 1,
+      "totalValid": {
+        "rounds": 1,
+        "median": 3990.399999976158,
+        "min": 3990.399999976158,
+        "max": 3990.399999976158
+      }
+    },
+    {
+      "label": "timeline remount",
+      "spans": 1000,
+      "domReady": {
+        "rounds": 3,
+        "median": 189.30000001192093,
+        "min": 174.80000001192093,
+        "max": 207.80000001192093
+      },
+      "framesValid": 3,
+      "totalValid": {
+        "rounds": 3,
+        "median": 2005,
+        "min": 1015.8000000119209,
+        "max": 2016
+      }
+    },
+    {
+      "label": "timeline remount",
+      "spans": 10000,
+      "domReady": {
+        "rounds": 3,
+        "median": 738.2999999523163,
+        "min": 714.3000000119209,
+        "max": 789.9000000357628
+      },
+      "framesValid": 3,
+      "totalValid": {
+        "rounds": 3,
+        "median": 3016.199999988079,
+        "min": 3010.599999964237,
+        "max": 3110.7000000476837
+      }
+    },
+    {
+      "label": "search input",
+      "spans": 1000,
+      "domReady": {
+        "rounds": 5,
+        "median": 13.100000023841858,
+        "min": 12,
+        "max": 16.5
+      },
+      "framesValid": 5,
+      "totalValid": {
+        "rounds": 5,
+        "median": 1009.5999999642372,
+        "min": 747.5,
+        "max": 2005
+      }
+    },
+    {
+      "label": "select filtered step",
+      "spans": 1000,
+      "domReady": {
+        "rounds": 5,
+        "median": 1.800000011920929,
+        "min": 1.199999988079071,
+        "max": 2
+      },
+      "framesValid": 5,
+      "totalValid": {
+        "rounds": 5,
+        "median": 1199.8999999761581,
+        "min": 961.1000000238419,
+        "max": 1999.800000011921
+      }
+    },
+    {
+      "label": "clear search/full timeline",
+      "spans": 1000,
+      "domReady": {
+        "rounds": 5,
+        "median": 70,
+        "min": 51.60000002384186,
+        "max": 92.60000002384186
+      },
+      "framesValid": 3,
+      "totalValid": {
+        "rounds": 3,
+        "median": 2027.699999988079,
+        "min": 2005.300000011921,
+        "max": 2033
+      }
+    },
+    {
+      "label": "search input",
+      "spans": 10000,
+      "domReady": {
+        "rounds": 5,
+        "median": 132.30000001192093,
+        "min": 121.40000003576279,
+        "max": 141.9000000357628
+      },
+      "framesValid": 5,
+      "totalValid": {
+        "rounds": 5,
+        "median": 1001.1000000238419,
+        "min": 993,
+        "max": 2010.699999988079
+      }
+    },
+    {
+      "label": "select filtered step",
+      "spans": 10000,
+      "domReady": {
+        "rounds": 5,
+        "median": 2.800000011920929,
+        "min": 1.899999976158142,
+        "max": 3
+      },
+      "framesValid": 4,
+      "totalValid": {
+        "rounds": 4,
+        "median": 2003.0999999940395,
+        "min": 1986.5,
+        "max": 2010.5999999642372
+      }
+    },
+    {
+      "label": "clear search/full timeline",
+      "spans": 10000,
+      "domReady": {
+        "rounds": 5,
+        "median": 825.3000000119209,
+        "min": 774.1000000238419,
+        "max": 855.3999999761581
+      },
+      "framesValid": 3,
+      "totalValid": {
+        "rounds": 3,
+        "median": 4005,
+        "min": 3018,
+        "max": 4005.199999988079
+      }
+    },
+    {
+      "label": "enter comparison",
+      "domReady": {
+        "rounds": 1,
+        "median": 446.69999998807907,
+        "min": 446.69999998807907,
+        "max": 446.69999998807907
+      },
+      "framesValid": 1,
+      "totalValid": {
+        "rounds": 1,
+        "median": 2004.800000011921,
+        "min": 2004.800000011921,
+        "max": 2004.800000011921
+      }
+    },
+    {
+      "label": "choose comparison run A",
+      "spans": 1000,
+      "domReady": {
+        "rounds": 1,
+        "median": 524.5,
+        "min": 524.5,
+        "max": 524.5
+      },
+      "framesValid": 1,
+      "totalValid": {
+        "rounds": 1,
+        "median": 2000.1000000238419,
+        "min": 2000.1000000238419,
+        "max": 2000.1000000238419
+      }
+    },
+    {
+      "label": "choose comparison run B",
+      "spans": 10000,
+      "domReady": {
+        "rounds": 1,
+        "median": 1058.800000011921,
+        "min": 1058.800000011921,
+        "max": 1058.800000011921
+      },
+      "framesValid": 1,
+      "totalValid": {
+        "rounds": 1,
+        "median": 3015.800000011921,
+        "min": 3015.800000011921,
+        "max": 3015.800000011921
+      }
+    },
+    {
+      "label": "choose comparison step B",
+      "spans": 10000,
+      "domReady": {
+        "rounds": 5,
+        "median": 490.10000002384186,
+        "min": 453.19999998807907,
+        "max": 616.2999999523163
+      },
+      "framesValid": 5,
+      "totalValid": {
+        "rounds": 5,
+        "median": 1513,
+        "min": 1395.3999999761581,
+        "max": 1551.699999988079
+      }
+    }
+  ],
+  "cleanup": {
+    "status": "PASS",
+    "removedKnownQaRuns": 5,
+    "savedEntries": 0,
+    "normalPageAfterReloadRunCount": 0,
+    "confirmation": "simulated for cleanup only",
+    "tabClosed": true,
+    "ownServersClosed": [
+      5227,
+      5228
+    ],
+    "temporaryFixturesRemoved": true,
+    "downloadsRetained": true
+  }
+}

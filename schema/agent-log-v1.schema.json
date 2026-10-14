@@ -1,0 +1,83 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Agent Debugger log v1",
+  "description": "App-specific format. ID uniqueness, parent graph and temporal containment require src/validate.ts in addition to this structural schema.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "runs"],
+  "properties": {
+    "schema_version": { "const": 1 },
+    "runs": { "type": "array", "items": { "$ref": "#/$defs/run" } }
+  },
+  "$defs": {
+    "text": { "type": "string", "pattern": "\\S" },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "^\\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01])T([01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d{1,3})?(Z|[+-]((0\\d|1[0-3]):[0-5]\\d|14:00))$"
+    },
+    "status": { "enum": ["running", "success", "error", "cancelled"] },
+    "interval": {
+      "if": { "properties": { "status": { "const": "running" } }, "required": ["status"] },
+      "then": { "properties": { "ended_at": { "type": "null" } } },
+      "else": { "properties": { "ended_at": { "$ref": "#/$defs/timestamp" } } }
+    },
+    "json": {
+      "oneOf": [
+        { "type": ["null", "boolean", "number", "string"] },
+        { "type": "array", "items": { "$ref": "#/$defs/json" } },
+        { "type": "object", "additionalProperties": { "$ref": "#/$defs/json" } }
+      ]
+    },
+    "error": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["message"],
+      "properties": {
+        "message": { "$ref": "#/$defs/text" },
+        "code": { "$ref": "#/$defs/text" },
+        "details": { "$ref": "#/$defs/json" }
+      }
+    },
+    "run": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "name", "agent_name", "status", "started_at", "ended_at", "spans"],
+      "properties": {
+        "id": { "$ref": "#/$defs/text" },
+        "name": { "$ref": "#/$defs/text" },
+        "agent_name": { "$ref": "#/$defs/text" },
+        "status": { "$ref": "#/$defs/status" },
+        "started_at": { "$ref": "#/$defs/timestamp" },
+        "ended_at": { "oneOf": [{ "$ref": "#/$defs/timestamp" }, { "type": "null" }] },
+        "spans": { "type": "array", "items": { "$ref": "#/$defs/span" } }
+      },
+      "allOf": [{ "$ref": "#/$defs/interval" }]
+    },
+    "span": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "parent_id", "type", "name", "status", "started_at", "ended_at", "input", "output", "error"],
+      "properties": {
+        "id": { "$ref": "#/$defs/text" },
+        "parent_id": { "oneOf": [{ "$ref": "#/$defs/text" }, { "type": "null" }] },
+        "type": { "enum": ["agent", "task", "prompt", "model", "tool"] },
+        "name": { "$ref": "#/$defs/text" },
+        "status": { "$ref": "#/$defs/status" },
+        "started_at": { "$ref": "#/$defs/timestamp" },
+        "ended_at": { "oneOf": [{ "$ref": "#/$defs/timestamp" }, { "type": "null" }] },
+        "input": { "$ref": "#/$defs/json" },
+        "output": { "$ref": "#/$defs/json" },
+        "error": { "oneOf": [{ "$ref": "#/$defs/error" }, { "type": "null" }] }
+      },
+      "allOf": [
+        { "$ref": "#/$defs/interval" },
+        {
+          "if": { "properties": { "status": { "const": "error" } }, "required": ["status"] },
+          "then": { "properties": { "error": { "$ref": "#/$defs/error" } } },
+          "else": { "properties": { "error": { "type": "null" } } }
+        }
+      ]
+    }
+  }
+}

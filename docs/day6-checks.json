@@ -1,0 +1,151 @@
+{
+  "status": "PASS",
+  "nativePicker": "NOT TESTED",
+  "nativeConfirm": "NOT TESTED",
+  "results": [
+    {
+      "name": "Prior known synthetic QA runs removed via App delete; no website data clearing",
+      "result": "PASS"
+    },
+    {
+      "name": "QA origin isolated and initially empty",
+      "result": "PASS"
+    },
+    {
+      "name": "Synthetic File change: success import/save and input reset",
+      "result": "PASS"
+    },
+    {
+      "name": "Same synthetic file selected twice: second attempt processed/rejected without state change",
+      "result": "PASS"
+    },
+    {
+      "name": "Success/tool error/parallel nested files imported and saved",
+      "result": "PASS"
+    },
+    {
+      "name": "Parent hidden: child keeps depth 3, 46px padding and original time position/axis",
+      "result": "PASS"
+    },
+    {
+      "name": "Hidden selection keeps details and returns after clearing",
+      "result": "PASS"
+    },
+    {
+      "name": "Thai input search",
+      "result": "PASS"
+    },
+    {
+      "name": "Thai output search",
+      "result": "PASS"
+    },
+    {
+      "name": "Explicit A/B choices, -4s delta and reversible swap move steps with runs",
+      "result": "PASS"
+    },
+    {
+      "name": "Change one side preserves the other; unfinished duration unavailable",
+      "result": "PASS"
+    },
+    {
+      "name": "Invalid syntax: runs/single selection/filters/A-B unchanged",
+      "result": "PASS"
+    },
+    {
+      "name": "Invalid version: runs/single selection/filters/A-B unchanged",
+      "result": "PASS"
+    },
+    {
+      "name": "Invalid schema: runs/single selection/filters/A-B unchanged",
+      "result": "PASS"
+    },
+    {
+      "name": "Invalid duplicate-run: runs/single selection/filters/A-B unchanged",
+      "result": "PASS"
+    },
+    {
+      "name": "Invalid duplicate-span: runs/single selection/filters/A-B unchanged",
+      "result": "PASS"
+    },
+    {
+      "name": "Invalid missing-parent: runs/single selection/filters/A-B unchanged",
+      "result": "PASS"
+    },
+    {
+      "name": "Invalid self-cycle: runs/single selection/filters/A-B unchanged",
+      "result": "PASS"
+    },
+    {
+      "name": "Invalid cycle: runs/single selection/filters/A-B unchanged",
+      "result": "PASS"
+    },
+    {
+      "name": "Invalid time-end: runs/single selection/filters/A-B unchanged",
+      "result": "PASS"
+    },
+    {
+      "name": "Invalid date: runs/single selection/filters/A-B unchanged",
+      "result": "PASS"
+    },
+    {
+      "name": "Empty runs document preserves all state",
+      "result": "PASS"
+    },
+    {
+      "name": "10MiB+1 real synthetic File rejected; helper spy confirms rejection before reading",
+      "result": "PASS"
+    },
+    {
+      "name": "Multi-run import in compare mode preserves pair and saved single selection",
+      "result": "PASS"
+    },
+    {
+      "name": "Run without spans disables only its step selector",
+      "result": "PASS"
+    },
+    {
+      "name": "Return to single restores original step/query/status/type",
+      "result": "PASS"
+    },
+    {
+      "name": "Thai error and nested error code search with status/type AND",
+      "result": "PASS"
+    },
+    {
+      "name": "Empty run UI and HTML/code payload rendered as text; null/0/false/empty payload retained",
+      "result": "PASS"
+    },
+    {
+      "name": "Export handlers produce complete single/workspace Blobs despite filtering; actual downloaded files verified separately",
+      "result": "PASS"
+    },
+    {
+      "name": "Real iframe reload restores five runs/order/filenames/full data; filters and comparison not persisted",
+      "result": "PASS"
+    },
+    {
+      "name": "Sample load skips all three saved IDs",
+      "result": "PASS"
+    },
+    {
+      "name": "SIMULATED confirm cancellation preserves runs; prompt contains name/ID",
+      "result": "PASS"
+    },
+    {
+      "name": "SIMULATED accept: saved A removed after commit, B/step preserved",
+      "result": "PASS"
+    },
+    {
+      "name": "SIMULATED accept: single selected last run deletion wraps to first remaining",
+      "result": "PASS"
+    },
+    {
+      "name": "SIMULATED accept: delete final QA runs leaves actual IndexedDB snapshot empty",
+      "result": "PASS"
+    },
+    {
+      "name": "Real reload after deleting QA runs remains empty",
+      "result": "PASS"
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "runs": [{
+    "id": "run-inventory-error",
+    "name": "ตรวจสต็อกสินค้า · tool ล้มเหลว",
+    "agent_name": "Inventory Agent · Demo",
+    "status": "error",
+    "started_at": "2026-10-13T10:15:00+07:00",
+    "ended_at": "2026-10-13T10:15:08+07:00",
+    "spans": [
+      { "id": "root", "parent_id": null, "type": "agent", "name": "Check demo inventory", "status": "error", "started_at": "2026-10-13T10:15:00+07:00", "ended_at": "2026-10-13T10:15:08+07:00", "input": { "sku": "DEMO-042" }, "output": null, "error": { "message": "ไม่สามารถตรวจสต็อกได้ เนื่องจาก tool หมดเวลา", "code": "TOOL_FAILED" } },
+      { "id": "prompt", "parent_id": "root", "type": "prompt", "name": "Receive inventory question", "status": "success", "started_at": "2026-10-13T10:15:00+07:00", "ended_at": "2026-10-13T10:15:01+07:00", "input": "ตรวจจำนวนคงเหลือของ DEMO-042 จากฐานข้อมูลตัวอย่าง", "output": null, "error": null },
+      { "id": "lookup", "parent_id": "root", "type": "tool", "name": "inventory_lookup · timeout", "status": "error", "started_at": "2026-10-13T10:15:01+07:00", "ended_at": "2026-10-13T10:15:07+07:00", "input": { "sku": "DEMO-042", "timeout_ms": 6000 }, "output": null, "error": { "message": "Demo inventory store did not respond within 6000 ms", "code": "ETIMEDOUT", "details": { "attempt": 1, "retryable": true } } },
+      { "id": "report", "parent_id": "root", "type": "task", "name": "Report failure without guessing stock", "status": "success", "started_at": "2026-10-13T10:15:07+07:00", "ended_at": "2026-10-13T10:15:08+07:00", "input": { "reason": "ETIMEDOUT" }, "output": "ยังไม่มีผลตรวจสต็อก กรุณาลองใหม่ภายหลัง", "error": null }
+    ]
+  }]
+}
