@@ -1,0 +1,25 @@
+<!doctype html><html lang="th"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Agent Debugger · Local QA</title><div id="qa" style="padding:12px;font:14px system-ui;background:#edf3ff;color:#172033;display:flex;gap:12px;flex-wrap:wrap"><strong>Local QA · ข้อมูลจำลองเท่านั้น</strong><button id="fixture1000" style="color:#172033;background:#fff">เติม fixture 1,000</button><button id="fixture10000" style="color:#172033;background:#fff">เติม fixture 10,000</button><button id="otlp" style="color:#172033;background:#fff">เติม OTLP</button><button id="flow" style="color:#172033;background:#fff">ทดสอบ flow อัตโนมัติ</button><output id="timing"></output><output id="flow-result"></output></div><div id="root"></div><script type="module">
+import React from 'react';
+import {createRoot} from 'react-dom/client';
+import App from '/src/App.tsx';
+import '/src/styles.css';
+import { fixture } from '/scripts/fixture.mjs';
+import { runFlow } from './browser-flow.mjs';
+createRoot(document.getElementById('root')).render(React.createElement(App));
+for (const count of [1000,10000]) document.getElementById(`fixture${count}`).onclick = async () => {
+  const doc = fixture(count,'chain',`qa-${count}-${Date.now()}`), source = JSON.stringify(doc);
+  const input = document.querySelector('input[type=file]');
+  const data = new DataTransfer(); data.items.add(new File([source], `qa-${count}.json`, {type:'application/json'}));
+  input.files = data.files;
+  let start;
+  const confirm = event => { if(event.target instanceof HTMLButtonElement && event.target.textContent === 'ยืนยันนำเข้า') start=performance.now(); };
+  document.addEventListener('click',confirm,true);
+  const observer = new MutationObserver(() => {
+    if (start !== undefined && document.querySelector('.run-context')?.textContent.includes(doc.runs[0].id) && document.querySelector('.span-row')) { document.getElementById('timing').textContent = `confirm → Timeline DOM: ${(performance.now()-start).toFixed(1)} ms; ${document.querySelectorAll('.span-row').length} rows (ไม่ใช่ paint)`; observer.disconnect();document.removeEventListener('click',confirm,true); }
+  });
+  observer.observe(document.getElementById('root'), {childList:true,subtree:true});
+  input.dispatchEvent(new Event('change', {bubbles:true}));
+};
+document.getElementById('otlp').onclick=async()=>{const source=await(await fetch('/examples/otlp.json')).text();const data=new DataTransfer();data.items.add(new File([source],'otlp.json'));const input=document.querySelector('input[type=file]');input.files=data.files;input.dispatchEvent(new Event('change',{bubbles:true}));};
+document.getElementById('flow').onclick=()=>runFlow();
+</script></html>

@@ -1,0 +1,42 @@
+{
+  "environment": "v24.16.0 win32 x64",
+  "method": "Node helper medians, 7 samples after 2 warmups; excludes browser rendering/paint/storage",
+  "rows": [
+    {
+      "count": 1000,
+      "shape": "roots",
+      "bytes": 235515,
+      "parseValidateMs": 5.94,
+      "indexMs": 0.87,
+      "searchMs": 0.04,
+      "depthMs": 0.16
+    },
+    {
+      "count": 1000,
+      "shape": "chain",
+      "bytes": 237403,
+      "parseValidateMs": 8.16,
+      "indexMs": 0.68,
+      "searchMs": 0.07,
+      "depthMs": 0.21
+    },
+    {
+      "count": 10000,
+      "shape": "roots",
+      "bytes": 2373017,
+      "parseValidateMs": 50.49,
+      "indexMs": 6.94,
+      "searchMs": 0.38,
+      "depthMs": 1.5
+    },
+    {
+      "count": 10000,
+      "shape": "chain",
+      "bytes": 2401904,
+      "parseValidateMs": 71.64,
+      "indexMs": 8.5,
+      "searchMs": 0.38,
+      "depthMs": 4.99
+    }
+  ]
+}

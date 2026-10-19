@@ -1,0 +1,32 @@
+{
+  "resourceSpans": [{
+    "resource": { "attributes": [{ "key": "service.name", "value": { "stringValue": "Local Demo Agent" } }] },
+    "scopeSpans": [{
+      "scope": { "name": "local-fixture" },
+      "spans": [
+        {
+          "traceId": "1234567890abcdef1234567890abcdef",
+          "spanId": "1000000000000001",
+          "name": "ตรวจข้อมูลตัวอย่าง OTLP",
+          "startTimeUnixNano": "1792368000000000000",
+          "endTimeUnixNano": "1792368002000000000",
+          "status": { "code": 1 },
+          "attributes": [{ "key": "agent_debugger.type", "value": { "stringValue": "agent" } }]
+        },
+        {
+          "traceId": "1234567890abcdef1234567890abcdef",
+          "spanId": "1000000000000002",
+          "parentSpanId": "1000000000000001",
+          "name": "lookup_catalog",
+          "startTimeUnixNano": "1792368000100000000",
+          "endTimeUnixNano": "1792368000900000000",
+          "status": { "code": 2, "message": "Demo: item unavailable" },
+          "attributes": [
+            { "key": "agent_debugger.type", "value": { "stringValue": "tool" } },
+            { "key": "agent_debugger.input", "value": { "kvlistValue": { "values": [{ "key": "item", "value": { "stringValue": "demo-only" } }] } } }
+          ]
+        }
+      ]
+    }]
+  }]
+}

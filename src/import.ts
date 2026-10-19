@@ -1,5 +1,8 @@
 import type { Run } from './model.ts';
 import { ValidationError, validateLog } from './validate.ts';
+import { adaptLog } from './adapters.ts';
+
+export interface ImportPreview { runs: Run[]; format: string; warnings: string[]; spanCount: number }
 
 export const MAX_FILE_BYTES = 10 * 1024 * 1024;
 type JsonFile = Pick<File, 'name' | 'size' | 'text'>;
@@ -30,22 +33,26 @@ const VALIDATION_HELP: Record<string, string> = {
 };
 
 export function parseImport(source: string, existingRuns: readonly Run[]): Run[] {
+  return previewImport(source, existingRuns.map(run => run.id)).runs;
+}
+export function previewImport(source: string, existingIds: readonly string[]): ImportPreview {
   let value: unknown;
   try { value = JSON.parse(source.replace(/^\uFEFF/, '')); }
   catch (error) {
     throw new Error(`JSON syntax ไม่ถูกต้อง ตรวจวงเล็บ เครื่องหมายคำพูดและ comma: ${error instanceof Error ? error.message : 'อ่าน JSON ไม่ได้'}`);
   }
+  const adapted = adaptLog(value);
   let incoming: Run[];
-  try { incoming = validateLog(value).runs; }
+  try { incoming = validateLog(adapted.value).runs; }
   catch (error) {
     if (error instanceof ValidationError) throw new Error(`${error.path}: ${VALIDATION_HELP[error.reason] ?? error.reason}`);
     throw new Error('ตรวจข้อมูลไม่ได้ โครงสร้างอาจซ้อนลึกเกินกว่าที่เบราว์เซอร์รองรับ ให้ลดความซ้อนของ payload แล้วลองใหม่');
   }
-  const existingIds = new Set(existingRuns.map(run => run.id));
+  const ids = new Set(existingIds);
   incoming.forEach((run, index) => {
-    if (existingIds.has(run.id)) throw new Error(`runs[${index}].id: ID ${JSON.stringify(run.id)} มีอยู่ในรายการแล้ว ให้เปลี่ยน ID ของรันใหม่นี้; ไม่ได้นำเข้าและไม่ได้เขียนทับข้อมูลเดิม`);
+    if (ids.has(run.id)) throw new Error(`runs[${index}].id: ID ${JSON.stringify(run.id)} มีอยู่ในรายการแล้ว ให้เปลี่ยน ID ของรันใหม่นี้; ไม่ได้นำเข้าและไม่ได้เขียนทับข้อมูลเดิม`);
   });
-  return incoming;
+  return { runs: incoming, format: adapted.format, warnings: adapted.warnings, spanCount: incoming.reduce((count, run) => count + run.spans.length, 0) };
 }
 
 /** Only reads locally; caller commits the result after the entire file passes. */

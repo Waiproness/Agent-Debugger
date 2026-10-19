@@ -1,0 +1,42 @@
+{
+  "environment": "v24.16.0 win32 x64",
+  "method": "React renderToString of real Timeline, 7 samples after 2 warmups; compares Git HEAD source and working copy with same dependencies. Includes validation-free timeline depth/search index and HTML serialization. Excludes DOM, events/effects, storage, browser layout/paint; not client render timing.",
+  "rows": [
+    {
+      "version": "before",
+      "spans": 1000,
+      "rows": 1000,
+      "medianMs": 110.97,
+      "minMs": 99.57,
+      "maxMs": 329.4,
+      "htmlBytes": 487277
+    },
+    {
+      "version": "before",
+      "spans": 10000,
+      "rows": 10000,
+      "medianMs": 1423.66,
+      "minMs": 1342.47,
+      "maxMs": 1469.5,
+      "htmlBytes": 4852280
+    },
+    {
+      "version": "after",
+      "spans": 1000,
+      "rows": 100,
+      "medianMs": 41.2,
+      "minMs": 37.25,
+      "maxMs": 46.79,
+      "htmlBytes": 57723
+    },
+    {
+      "version": "after",
+      "spans": 10000,
+      "rows": 100,
+      "medianMs": 28.9,
+      "minMs": 24.9,
+      "maxMs": 43.84,
+      "htmlBytes": 62517
+    }
+  ]
+}

@@ -1,90 +1,99 @@
-# Agent Debugger — รุ่นแรก
+# Agent Debugger
 
-เว็บตรวจ agent log บนคอมส่วนตัวด้วย React + TypeScript + Vite นำเข้า JSON, ดูไทม์ไลน์และรายละเอียด, ค้นหา/กรอง, เปรียบเทียบสองรัน, บันทึกในเบราว์เซอร์, ลบ และส่งออกสำรอง ประมวลผลข้อมูลในเบราว์เซอร์ ไม่มี AI API, backend สำหรับ log, login หรือ live logs และไม่ได้เผยแพร่ออนไลน์
+เครื่องมือตรวจ agent trace บนเครื่องด้วย React + TypeScript + Vite นำเข้าไฟล์ ดู Timeline/JSON ค้นหา สรุปสิ่งที่ควรตรวจ เปรียบเทียบ A/B และส่งออกสำรองพร้อมปกปิดข้อมูล
 
-รองรับเฉพาะ **Agent Debugger schema_version: 1** ยังไม่มีตัวแปลง log จากทุก Agent SDK การแสดงขั้นตอน model เป็นการอ่านข้อมูลใน log ไม่ได้เรียกโมเดลจริง ตัวอย่างทั้งหมดเป็นข้อมูลสมมติ
+**ไม่ต้องใช้ API key หรือบริการเสียเงิน** ไม่มีการเรียกโมเดล AI, backend สำหรับ log, login, analytics, CDN หรือการส่งไฟล์ออกนอกเครื่อง การแสดงขั้นตอน `model` เป็นเพียงการอ่าน log ตัวอย่างทั้งหมดเป็นข้อมูลจำลอง ไม่มีข้อมูลลับจริง
 
-สถานะหลัง Day 7: **พร้อมใช้ภายในขอบเขตที่ตรวจ** tests 120/120, TypeScript และ build ผ่าน; ดาวน์โหลดจริงและนำ bytes กลับเข้า QA ที่ว่างแล้วเทียบครบทุกฟิลด์ 3 รัน/15 spans; ตรวจ log 1,000/10,000 spans ได้ Picker/native confirm จริงยังไม่ได้ตรวจ ดู [DAY7.md](DAY7.md) สำหรับหลักฐาน ข้อจำกัด และ checklist 10–15 นาที
+## เริ่มใช้งาน
 
-## ติดตั้งและเปิดเว็บ
+ใช้ Node.js 24 ขึ้นไปและ npm (ทดสอบด้วย v24.16.0 / Windows x64) ติดตั้ง dependencies ครั้งแรกต้องใช้อินเทอร์เน็ต หลังติดตั้งแล้วใช้กับไฟล์ local ได้
 
-ใช้ **Node.js 24 ขึ้นไป** และ npm (ตรวจด้วย Node v24.16.0 บน Windows) ติดตั้ง dependencies ต้องใช้อินเทอร์เน็ตครั้งแรก หลังติดตั้งแล้วเว็บใช้ไฟล์ local ไม่มี CDN, font ภายนอก, analytics หรือ API ภายนอก
-
-~~~powershell
-cd "C:\Users\Wai\Desktop\Self Project\Agent Debugger"
+```powershell
 npm ci
 npm run dev
-~~~
+```
 
-เปิด **http://127.0.0.1:5173/** ไม่เปิด index.html ด้วยการดับเบิลคลิก หยุด server ที่คุณเปิดด้วย Ctrl+C Dev/preview ผูกกับ loopback 127.0.0.1 และใช้ strictPort หากพอร์ตถูกใช้จะหยุดแจ้ง error ไม่เปลี่ยนพอร์ตเงียบ ๆ
+เปิด **http://127.0.0.1:5173/** หยุด server ด้วย Ctrl+C ไม่เปิด index.html ด้วยการดับเบิลคลิก `dev`/`preview` ผูกกับ loopback และ strictPort หากพอร์ตไม่ว่างจะหยุดแจ้ง error
 
-Package scripts จริง:
-
-~~~powershell
+```powershell
 npm test
 npm run typecheck
 npm run build
 npm run preview
-~~~
+node scripts/benchmark.mjs
+node scripts/benchmark-ui.mjs
+```
 
-preview ใช้ dist/ จาก build และ URL :5173 เดียวกับ dev ให้หยุด dev ที่คุณเปิดก่อนเปิด preview Vite dev ใช้ local WebSocket สำหรับอัปเดตไฟล์ระหว่างพัฒนา ไม่ใช่ live agent logs ไม่มี deployment ในรุ่นนี้
+`build` สร้างเว็บ static ใน `dist` ไม่มีการ deploy อัตโนมัติ รักษา `schema_version: 1` เดิมและไม่เพิ่ม dependency
 
-**เปิดข้อมูลเดิม:** ใช้ browser, profile และ **host/port เดิม** ทุกครั้ง IndexedDB ของ http://127.0.0.1:5173 ต่างจาก localhost:5173 และต่างพอร์ตเป็นคนละ origin ไม่ซิงก์ข้ามเครื่องหรือข้าม profile
+## ลองฟีเจอร์
 
-## ทดลองด้วยตัวอย่างสามไฟล์
+1. กด **โหลดรันตัวอย่าง** หรือ **เลือกไฟล์ JSON** (.json ไม่เกิน 10 MiB) ไฟล์จริงจะมี preview แสดงรูปแบบ จำนวน Run/Span และคำเตือน ก่อนกดยืนยันนำเข้า ยกเลิกได้โดยไม่เพิ่มหรือบันทึกข้อมูล ปุ่มยกเลิกการอ่านหยุด Worker และทิ้งผลลัพธ์เก่า
+2. เลือกรัน เปิด **สิ่งที่ควรตรวจ** เพื่อดู error, ขั้นตอนที่ยังไม่จบ, 5 ขั้นตอน/Tool ที่นานที่สุด และ Tool ชื่อเดิมที่เรียกซ้ำ กดรายการเพื่อเปิดรายละเอียด ใช้หน้ารายการดู error/การเรียกซ้ำทั้งหมด ข้อสังเกตไม่ได้ยืนยันว่าเป็น bug หรือค้าง
+3. ค้น substring แบบไม่แยก case ใน ID/ชื่อ/type/keys และค่า input/output/error รวมภาษาไทย กรอง status และ type แบบ AND การกรองไม่เปลี่ยนข้อมูลหรือแกนเวลา Timeline แสดง 100 แถวต่อหน้า ใช้ ↑ ↓ Home End ข้ามหน้าได้ และกด **ไปขั้นตอนที่เลือก** หลังล้างตัวกรอง
+4. เปิด **เปรียบเทียบสองรัน** เลือกรัน A/B แล้วเลือกคู่แนะนำหรือเลือกแต่ละฝั่งเอง ค้นขั้นตอนด้วยชื่อ/ID/type ได้ ตัวเลือกแสดงสูงสุด 100 รายการแรกและรายการที่เลือกเพื่อไม่สร้าง DOM หลายหมื่น option
+5. คู่แนะนำใช้ type/ชื่อตรงกัน/สาย parent/ลำดับชื่อซ้ำ เรียง siblings ตามเวลาเริ่ม เวลาเท่ากันใช้ลำดับในไฟล์ จากนั้นจับคู่ที่เหลือด้วยชื่อ/type/ความลึกตามลำดับในไฟล์ ไม่อาศัย ID ข้ามรันและไม่ยืนยันว่าทำงานเหมือนกัน รายการจับคู่ไม่ได้แสดงจำนวนและ 100 รายการแรก ค้นรายการอื่นได้ในตัวเลือกแต่ละฝั่ง
+6. **แสดงเฉพาะส่วนที่เปลี่ยน** ซ่อน field ที่เท่ากัน และแสดง path/ค่า A/B ของ input/output/error ที่เปลี่ยน (สูงสุด 200 ตำแหน่ง มีข้อความเตือนเมื่อเกิน) ปิดตัวเลือกเพื่อดู payload เต็ม object key order ไม่มีผล array order มีผล และ null/false/0/ข้อความว่างยังแยกกัน เวลาแสดง B − A; งานไม่จบยังไม่มีผลต่างเวลา
+7. ส่งออกเลือก **ปกปิดข้อมูลตามกฎ** ได้ (เปิดเริ่มต้น) เพิ่มชื่อ field คั่นด้วย comma ตรวจ preview และตำแหน่งที่ปกปิดก่อนดาวน์โหลด การส่งออกใช้รันเต็มแม้มีตัวกรอง นำกลับเข้าได้ถ้า run ID ไม่ซ้ำกับ workspace ปลายทาง
+8. เลือกธีม **ตามระบบ/สว่าง/มืด** ด้านบน จำค่าใน localStorage รองรับคีย์บอร์ด focus ring, reduced motion และหน้าจอเล็ก แผงรายละเอียดปรับความกว้างได้บน desktop; JSON ยุบ/ขยาย/คัดลอกได้ พร้อมจำกัดข้อความเริ่มต้น 24,000 ตัวอักษรและปุ่มแสดงทั้งหมด
 
-กด **โหลดรันตัวอย่าง** เพื่อทดลองโดยไม่บันทึกอัตโนมัติ หรือเริ่มจากรายการว่างแล้วใช้ **เลือกไฟล์ JSON** นำเข้าทีละไฟล์เพื่อทดลองการบันทึก:
+## ไฟล์และ OTLP JSON ที่รองรับ
 
-| ไฟล์ใน public/examples | ข้อมูลที่ควรเห็น |
-| --- | --- |
-| success.json | 1 รัน, 5 spans, สำเร็จ, เวลารวม 12 s |
-| tool-error.json | 1 รัน, 4 spans, tool timeout ETIMEDOUT, เวลารวม 8 s |
-| parallel-nested.json | 1 รัน, 6 spans, งานซ้อน/พร้อมกัน, ยังไม่จบ |
+- **Agent Debugger v1**: นำเข้า/ส่งออกตาม `schema/agent-log-v1.schema.json` และ validator เดิม ไม่เปลี่ยนความหมายของข้อมูล
+- **OpenTelemetry OTLP JSON**: เฉพาะ body ของ `ExportTraceServiceRequest` ที่มี `resourceSpans[].scopeSpans[].spans[]` แบบ lowerCamelCase อ่านจากไฟล์เท่านั้น ไม่มีการเชื่อมต่อ Collector/API ไม่รองรับ binary Protobuf, NDJSON หรือ metrics/logs
+- ตรวจจาก [OTLP JSON encoding](https://opentelemetry.io/docs/specs/otlp/#json-protobuf-encoding), [Span/Status protobuf](https://github.com/open-telemetry/opentelemetry-proto/blob/main/opentelemetry/proto/trace/v1/trace.proto) และ [Status semantics](https://opentelemetry.io/docs/specs/otel/trace/api/#set-status) ไม่ตี `UNSET` ว่า success
 
-รวม 3 รัน/15 spans หากโหลดตัวอย่างก่อนแล้วนำเข้าไฟล์เดียวกัน จะชน ID ตามกติกาเดิม การ reload ทำให้ตัวอย่างที่ยังอยู่เฉพาะหน่วยความจำหาย แต่ไม่ลบรันที่บันทึกสำเร็จ
+OTLP ต้องมี traceId hex 32 หลัก, spanId/parentSpanId hex 16 หลัก, ชื่อและเวลาเริ่ม/จบเป็น Unix nanoseconds แบบ decimal string (หรือ safe integer) ที่มากกว่าศูนย์ และ **status.code ที่บันทึกไว้เป็น 1 (OK) หรือ 2 (ERROR)** ทุก span ค่าที่ไม่ระบุ/default/UNSET ไม่สามารถแทนด้วย v1 จึงปฏิเสธทั้งไฟล์ ไม่สร้างสถานะ/เวลาจบขึ้นเอง หากเครื่องมือ export ใช้ UNSET ต้องใช้ไฟล์ v1 ที่บันทึกสถานะจริง หรือ instrumentation ที่บันทึกสถานะจริงก่อนส่งออก ห้ามเปลี่ยนเลขเพื่อทำให้ validation ผ่านโดยไม่มีหลักฐาน
 
-สำหรับ QA ให้ใช้ origin แยก เช่น npm run dev -- --port 5237 แล้วเปิด http://127.0.0.1:5237 ตรวจว่ารายการเริ่มว่าง ใช้เฉพาะข้อมูลสมมติ ไม่ล้างข้อมูลเว็บไซต์ของ workspace จริง
+หนึ่ง trace ต้องมี root เดียวและ parents ครบ root เป็นแหล่งชื่อ เวลา และสถานะของ Run โดยตรง ไม่รวมสถานะลูกเป็นสถานะรัน แต่ละ child ต้องอยู่ภายในช่วง parent/root ตามกติกา v1; OTLP ที่ถูกต้องแต่มี child จบหลัง parent จะนำเข้าไม่ได้ ไม่มีการตัดหรือขยับเวลา/แก้ parent ID ให้
 
-## วิธีใช้งานตั้งแต่นำเข้าถึงสำรอง
+ลด nanoseconds เป็น milliseconds โดยปัดเศษลงพร้อมคำเตือน ซึ่งอาจทำให้ช่วงเวลาสั้นมากแสดง 0 ms รูปแบบทั่วไปของ OTLP span ใช้ type `task` (ไม่ได้เดาว่าเป็น Tool/Agent); กำหนดชัดเจนได้ด้วย attribute `agent_debugger.type` ค่าใน enum v1
 
-1. **นำเข้า:** เลือกไฟล์ .json ครั้งละหนึ่งไฟล์ สูงสุด **10 MiB = 10,485,760 bytes** ตรวจขนาดก่อนอ่านและตรวจทั้งไฟล์ก่อนเพิ่มข้อมูล รองรับ UTF-8 BOM และ .JSON ไม่พึ่ง MIME type เมื่อนำเข้าสำเร็จในโหมดเดี่ยว เลือกรันแรกของไฟล์ใหม่; runs ว่างตรวจผ่านโดยไม่เปลี่ยน selection
-2. **ตรวจไทม์ไลน์:** เลือกรันทางซ้าย แล้วเลือกขั้นตอนในไทม์ไลน์เพื่อดู ID/parent/เวลา/input/output/error งานซ้อนอยู่บนแกนเวลาเดียวกัน ความลึกอิง parent ระยะเยื้องแสดงสูงสุด 5 ระดับ สรุปเวลารวมใช้ end−start ไม่บวก spans ข้อความ HTML/โค้ดแสดงเป็น text เท่านั้น
-3. **ค้นหา/กรอง:** ค้น substring แบบไม่แยก case รองรับไทยใน id/name/type/input/output/error รวม keys และ scalar values ที่ซ้อน; status/type ใช้ select แยก ทั้งสามเงื่อนไขรวมแบบ AND กรองเฉพาะแถว ไม่เปลี่ยนข้อมูล แกนเวลา ความลึก หรือจำนวนรวม หากขั้นตอนที่เลือกถูกซ่อน รายละเอียดยังอยู่และมีปุ่มล้างตัวกรองกลับไปดู
-4. **เปรียบเทียบ:** กดเปรียบเทียบสองรัน เลือกรัน A/B คนละ ID แล้วเลือกขั้นตอนเอง ไม่ auto-match แม้ชื่อหรือ span ID เหมือนกัน แสดงผลต่าง B−A และความเหมือน/ต่างระดับฟิลด์ สลับ A/B ย้าย steps ตามกัน เปลี่ยนรันฝั่งเดียวล้าง step ฝั่งนั้น กลับโหมดเดี่ยวคืนรัน/step/filters เดิม
-5. **บันทึก:** รันที่นำเข้าผ่านจะบันทึกใน IndexedDB **อัตโนมัติทั้งไฟล์ใน transaction เดียว** ผลนำเข้าแยกจากผลบันทึก รอข้อความบันทึกสำเร็จก่อน reload หากล้มเหลวยังตรวจ/ส่งออกได้และมีลองบันทึกใหม่ รันที่ยังไม่บันทึกจะหายเมื่อ reload ตัวอย่างไม่บันทึกอัตโนมัติ คืนข้อมูลจะตรวจทั้ง snapshot ก่อนแสดง และเลือก first saved run ไม่บันทึก filters/selection/A-B
-6. **ส่งออก:** ใช้ส่งออก JSON รันเดี่ยวที่เลือก, ทุกรันใน workspace หรือรัน A/B เก็บรันเต็มรวม spans ที่กรองออกและค่าจริงทุกชนิด ไม่รวม filename/storage metadata ใช้ envelope v1 เดิม ส่งออกก่อนลบและเก็บไฟล์ต้นฉบับไว้ ปุ่มแจ้งเริ่มดาวน์โหลด ให้ตรวจว่าไฟล์เกิดจริงใน Downloads และเปิด/นำเข้าสำเนาใน QA ที่ว่างเพื่อยืนยันสำรอง
+input/output เริ่มเป็น null เมื่อไม่มีข้อมูล ใช้ custom attributes `agent_debugger.input`/`agent_debugger.output` เพื่อเก็บ AnyValue โดยตรง: string/bool/finite double/int/array/kvlist รองรับ int64 แบบ string เพื่อไม่เสีย precision ไม่รองรับ bytesValue และ kvlist key ซ้ำใน payload เหล่านี้ AnyValue ซ้อนสูงสุด 100 ชั้น
 
-ใช้คีย์บอร์ดกับปุ่ม/input/select ได้ มี focus ring และสถานะข้อความประกอบสี จอแคบเรียง panels ลงด้านล่าง ค้น query ไม่ได้รวม status/parent/timestamps หรือข้อความ placeholder ที่เว็บสร้างขึ้น ค่า null แสดงว่าไม่มีข้อมูล ต่างจาก 0, false และข้อความว่าง
+error.message ใช้ status.message ถ้ามี มิฉะนั้นแสดงชื่อรหัส `OTLP STATUS_CODE_ERROR` พร้อมคำเตือน ไม่แต่งคำอธิบายเหตุการณ์ agent_name ใช้ `resource.attributes[service.name]` ของ root หรือป้าย “OTLP (ไม่ระบุ service.name)”
 
-## กติกาสำคัญ
+metadata, events, links และ attributes อื่นไม่อยู่ใน schema v1 จึงไม่เก็บในการแปลง/ส่งออก มีคำเตือนก่อนยืนยัน **เก็บไฟล์ต้นฉบับไว้** ดู [public/examples/otlp.json](public/examples/otlp.json) ซึ่งเป็น fixture ปลอดข้อมูลลับ เตรียมไฟล์จาก body ของ exporter ในเครื่อง รวบรวม spans ของแต่ละ trace ให้ครบ และอย่าตัด parents เพื่อแบ่งไฟล์
 
-- **ID ซ้ำ:** run ID ต้องไม่ซ้ำในไฟล์หรือรายการปัจจุบัน รวมตัวอย่างและ restored runs ชนแม้คนละชื่อไฟล์ก็ปฏิเสธทั้งไฟล์ ไม่มี overwrite/merge Span ID ซ้ำไม่ได้ภายในรัน แต่ต่างรันใช้ ID เดียวกันได้ Parent ต้องอยู่ในรันเดียวกันและห้ามวน ไฟล์ผิดไม่เปลี่ยนรายการ selection filters หรือ A/B
-- **ไฟล์เกินขนาด:** มากกว่า 10 MiB ปฏิเสธก่อนอ่าน ขนาดเท่าเพดานรับได้ แบ่งเป็นหลายไฟล์โดยแต่ละรันและ spans ยังครบ ID ไม่ซ้ำข้ามไฟล์ อย่าตัด spans จน parent หาย ไฟล์ส่งออกอาจเกินเพดาน; หากรันเดียวใหญ่เกินยังไม่มีตัวช่วยแบ่ง/streaming และนำกลับตรง ๆ ไม่ได้
-- **ขั้นตอนยังไม่จบ:** running ต้องมี ended_at: null แสดง “ยังไม่จบ” ไทม์ไลน์สิ้นสุดที่เวลาล่าสุดที่มีใน log ไม่ใช้เวลาปัจจุบัน หากเปรียบเทียบ steps ครบแต่ฝั่งใดยังไม่จบ ระยะเวลาแสดง “ยังเปรียบเทียบไม่ได้ — ขั้นตอนยังไม่จบ” หากยังเลือกไม่ครบแสดงสถานะเลือกไม่ครบ ค่าที่เป็น null ของ input/output/error ยังเทียบตามกติกา JSON เดิม
-- **ความเท่ากันของ JSON:** object key order ไม่มีผล array order มีผล strings เทียบตรงตัว ไม่ trim/เปลี่ยน case และแยก null/0/false/ข้อความว่าง/array/object ไม่ใช่การยืนยันว่าขั้นตอนสองฝั่งเป็นงานเดียวกัน
-- **ลบ:** ยืนยัน dialog ที่มีชื่อ/ID ของรัน saved run ต้องลบจาก IndexedDB สำเร็จก่อนออกจาก UI หากล้มเหลวคงรันและ selection ไม่มี undo ลบรันที่เลือกจะเลือกถัดไปหรือวนไป first remaining ลบใน comparison ล้างเฉพาะฝั่งนั้นและ step ของฝั่งนั้น
+## IndexedDB และการสำรอง
 
-## ข้อมูลบันทึกและการสำรอง
+เก็บเฉพาะ browser/profile/origin นี้ ตัวอย่างอยู่ในหน่วยความจำและไม่บันทึกอัตโนมัติ รันจากไฟล์บันทึกเมื่อยืนยันนำเข้าและ transaction complete; ถ้าล้มเหลวมีป้ายเตือนและปุ่มลองบันทึกใหม่ ยัง inspect/ส่งออกได้แต่จะหายเมื่อ refresh
 
-IndexedDB เก็บรันกับ filename เฉพาะ browser/profile/origin นี้ การล้างข้อมูลเว็บไซต์/private mode/นโยบาย browser/พื้นที่เต็มหรือปัญหาอุปกรณ์อาจทำให้ข้อมูลหายหรือบันทึกไม่ได้ คำว่า transaction complete ยืนยัน commit แต่ไม่รับรองการรอดจาก eviction/crash/power loss ควรเก็บไฟล์ต้นฉบับและส่งออกสำรองเป็นระยะ
+ฐาน `agent-debugger` อัปเกรดจาก IndexedDB v1 เป็น v2 ใน **versionchange transaction เดียว**: ตรวจ snapshot `workspace/runs` เดิมครบทุก entry ก่อนย้ายเป็น object store `runs` แยก record ตาม run ID และ metadata ลำดับ IDs ใน `workspace` การ save เขียนเฉพาะรันใหม่ การ delete ลบเฉพาะรันนั้น บวก metadata ขนาดเล็ก แต่ยังอ่าน/ตรวจข้อมูล saved workspace ทุกครั้งเพื่อรักษา integrity
 
-หาก storage เสียหรือ version/layout ไม่รองรับ เว็บไม่แสดงบางส่วนและ **ไม่ลบ ซ่อม หรือเขียนทับอัตโนมัติ** ยังนำรันใหม่เข้าหน่วยความจำได้ แต่ save จะล้มเหลวถ้า storage ยังอ่าน/validate ไม่ผ่าน รันเดิมอาจยังอยู่แต่ UI เปิดไม่ได้ ไม่มี recovery/migration/raw-storage export ในรุ่นแรก อย่าล้างเว็บไซต์โดยไม่มีสำรอง ใช้ JSON สำรองที่ถูกต้องใน origin QA/ใหม่ที่ว่างเพื่ออ่านข้อมูล ไม่แก้ DB หรือรันจริงเพื่อทดสอบ
+ถ้าข้อมูลเดิมเสีย version/layout ไม่รองรับ หรือ transaction ล้มเหลว migration จะ abort รวม schema change ทั้งหมด คงฐาน v1 และ snapshot เดิม ไม่ล้างฐาน ไม่ซ่อม/ทับอัตโนมัติ การ restore ล้มเหลวไม่แสดงชุดข้อมูลบางส่วน ปิดแท็บที่ขวาง upgrade แล้ว reload เพื่อลองใหม่ ไม่ควรล้างข้อมูลเว็บไซต์หากไม่มีสำรอง
 
-ระหว่าง import/load/save/retry/delete ล็อกการเปลี่ยนรายการที่ซ้อนกัน แต่ยัง inspect/filter/compare/export ได้ write transaction อ่านข้อมูลปัจจุบันซ้ำก่อนเขียนเพื่อป้องกัน snapshot เก่า แต่ UI หลายแท็บไม่ sync อัตโนมัติ ใช้แท็บเดียวหรือ reload ก่อนทำงานต่อ
+run ID ซ้ำปฏิเสธทั้งไฟล์/transaction ไม่มี overwrite การลบต้องยืนยัน dialog ที่มีชื่อและ ID และรอ commit ก่อนนำออกจาก UI ถ้าล้มเหลวคงข้อมูล/selection ไม่มี undo; export สำรองก่อนลบ หลายแท็บไม่ sync UI อัตโนมัติ ใช้แท็บเดียวหรือ reload ก่อนทำงานต่อ
 
-## Log ใหญ่และขอบเขตที่ตรวจ
+IndexedDB ไม่ใช่ไฟล์สำรอง การล้างเว็บไซต์ private mode นโยบาย browser พื้นที่เต็ม eviction หรืออุปกรณ์เสียอาจทำให้ข้อมูลหายหรือบันทึกไม่ได้ เก็บไฟล์ต้นฉบับและส่งออกสำรองเป็นระยะ ไม่รับประกันการรอดจาก crash/power loss
 
-Day 7 ใช้ Brave/Chromium 155 บน Windows, i5-11400H, RAM ประมาณ 32 GiB กับ production build: fixtures 1,000 spans (324,552 bytes) และ 10,000 spans (3,294,284 bytes) ผ่าน import/render/search/selection/comparison ด้วย input จำลองใน browser และ IndexedDB จริง ข้อมูลมี parent 2 ระดับและ payload สั้น ไม่แทนทุก log รูปแบบ/ขนาด
+## การปกปิดข้อมูล
 
-สำหรับ 10,000 spans วัด dispatch→DOM พร้อมหลัง import/save 2.99 s (1 รอบ), remount timeline median 738 ms (3 รอบ), search 132 ms / กลับทุกแถว 825 ms / เปลี่ยน step B ใน comparison 490 ms (อย่างละ 5 รอบ) ตัวเลขรวมการคำนวณ/React commit/การตรวจ DOM ของ QA **ไม่ใช่เวลา React render ล้วนหรือความหน่วงการพิมพ์จริง** ค่า frame/paint ยืนยันไม่ได้และไม่ใช้ timeout ของเครื่องมือเป็นตัวเลขความหน่วง รายละเอียด/ช่วง min–max อยู่ใน DAY7.md
+ทำบนสำเนาในหน่วยความจำ ไม่มีการแก้ Workspace/IndexedDB ตรวจชื่อ field แบบไม่แยก case และละเครื่องหมายคั่น เช่น authorization, api_key/apiKey, access_token, refresh_token, password, client_secret, private_key รวม field เพิ่มที่ผู้ใช้ระบุ ตรวจข้อความ Bearer, รูปแบบ key บางชนิด, JWT และ private key ที่ชัดเจน แทนค่าเป็น `[REDACTED]` โดยยังเป็น JSON v1 ที่นำเข้าได้
 
-ยัง render ทุกแถวและสร้างทุก option เมื่อเทียบรัน ไม่มี virtualization ความหน่วงของ 10,000 spans ชัดเจน ให้ใช้คำค้นเพื่อลดแถวที่แสดงและแบ่งไฟล์โดยรักษารัน/parent ให้ครบ ไม่รับรองความลื่น หรือประสิทธิภาพกับ workspace ใหญ่หลายรัน/payload ลึกมาก JSON.stringify และ validation ยังมีข้อจำกัดหน่วยความจำ/ความลึก ทุก write ตรวจและเขียน saved snapshot ทั้งชุด
+โครงสร้าง id/parent_id/type/status/timestamps ไม่ถูกเปลี่ยน ปกปิดเฉพาะชื่อที่แสดงและ payload/error fields เพื่อรักษาการนำกลับเข้า ไม่รับประกันว่าจะพบข้อมูลลับทุกชนิด เช่นรูปแบบเฉพาะองค์กรหรือข้อมูลใน ID/ชื่อ field เอง Preview แสดง 24,000 ตัวอักษรแรกและตำแหน่งที่ปกปิดสูงสุด 100 รายการ จำนวนทั้งหมดแสดงแยก ไม่มีการส่งข้อมูลไปตรวจภายนอก
 
-**ยังไม่ได้ตรวจ:** OS picker เลือก/Cancel/เลือกไฟล์เดิมหลังแก้, native confirm Cancel/OK, physical typing latency, React render/paint ล้วน, screen reader, browser อื่น/private mode, crash/power loss หรือ stress workspace ใหญ่หลายรัน ผลจำลองไม่นับเป็น native flow ไม่มี AI API และไม่มีตัวแปลงทุก SDK
+## ประสิทธิภาพและการตรวจสอบ
+
+[docs/performance-before.json](docs/performance-before.json) และ [docs/performance-after.json](docs/performance-after.json) วัด helper ใน Node: 1,000/10,000 spans ทั้ง roots และสาย parent ลึก ตรวจ parse/validate/index/search/depth; fixture สร้างด้วย `scripts/fixture.mjs` โดยไม่เก็บไฟล์ใหญ่ใน repository
+
+10,000 spans หลังปรับ parse/validate median 54.60 ms (roots), 65.06 ms (chain), search 0.37–0.38 ms และ depth 1.29–2.80 ms การย้ายอ่าน/parse/validate ไฟล์ตั้งแต่ 512 KiB ไป module Web Worker จึงช่วยย้ายงานหนักออกจาก main thread ไม่ได้ทำให้การคำนวณเหล่านี้เร็วขึ้น; browser ที่ไม่มี Worker จะใช้ main-thread fallback Search ใช้ดัชนีที่สร้างครั้งเดียวต่อรันและไม่ใช้ Worker เพราะผลวัดยังต่ำ
+
+[docs/performance-ui.json](docs/performance-ui.json) วัด React `renderToString` ของ Timeline จริงจาก Git HEAD เดิมเทียบ working copy บน dependency เดียวกัน 7 รอบหลัง warmup 2 รอบ: 1,000 spans median 110.97 → 41.20 ms; 10,000 spans 1,423.66 → 28.90 ms จำนวนแถว 10,000 → 100 เป็นการวัด CPU/การสร้าง HTML ใน Node **ไม่ใช่เวลาสร้าง DOM, React client render, ความหน่วงการพิมพ์ หรือ browser paint** ไม่ควรตีเป็นอัตราความลื่นจริงของ UI
+
+baseline dev-browser วัด dispatch → Timeline DOM ของ 10,000-deep fixture 1 รอบได้ 1,917.5 ms ก่อนแก้ (10,000 แถว) เป็น DOM-ready ไม่ใช่ paint การตรวจหลังแก้ยืนยัน DOM ไม่เกิน 100 แถวและค้น/เลือก s9999 ได้ ไม่ใช้ตัวเลขต่างขอบเขตกันเพื่ออ้าง speedup ฝั่ง browser ดู [docs/readiness-qa.md](docs/readiness-qa.md)
+
+ข้อจำกัด: เพดานนำเข้า 10 MiB, ไม่ streaming; export อาจใหญ่เกินและนำกลับตรง ๆ ไม่ได้ การ restore/save/delete ยัง clone และ validate saved workspace ทั้งชุด payload ที่ใหญ่/ลึกมากอาจชนหน่วยความจำหรือ stack ของ JSON/structuredClone การ stringify/redaction/export ยังอยู่ main thread มีข้อความตัดทอนใน JSON/diff แต่ข้อมูลส่งออกยังเต็ม ไม่รับรอง workspace หลายรันขนาดใหญ่มากทุกแบบ
+
+Node tests ครอบคลุมของเดิมและ adapter/insights/matching/diff/redaction/Worker/migration รวม integration import → inspect/search → compare → export/re-import และ save → reload → delete พร้อมข้อมูล 1,000/10,000-deep spans ใช้ fake-indexeddb ที่ระดับ tests
+
+เปิด `http://localhost:5173/tests/browser.html` ขณะ `npm run dev` เพื่อใช้ **หน้า QA เฉพาะ dev** บน origin แยกจาก 127.0.0.1 (อย่าใช้ origin ที่มีรันจริง) ปุ่มทดสอบ flow ใช้ React UI กับ File/DataTransfer และ IndexedDB จริง แต่จำลอง file-change/download ไม่ใช่ OS picker/download manager สร้างและลบเฉพาะ fixtures ของตัวเอง ไม่รวมหน้านี้ใน production build
+
+หลักฐาน Day 1–7 เก็บเป็นประวัติใน DAY*.md และ docs/day*-checks.json พฤติกรรมปัจจุบันให้ยึด README นี้และผล QA ล่าสุด การเผยแพร่ทำแยกจากการพัฒนาบนเครื่องตามคำสั่งผู้ใช้ โดยส่งเฉพาะ source และ static build ไม่รวมข้อมูล IndexedDB หรือไฟล์ log ที่นำเข้า
 
 ## รูปแบบ JSON ของเว็บนี้ — schema_version 1
 
-นี่คือ **รูปแบบเฉพาะ Agent Debugger** ไม่ใช่รูปแบบมาตรฐานของทุก Agent SDK ไฟล์จาก SDK อื่นต้องแปลงให้ตรง v1 ก่อน; ยังไม่มีตัวแปลง
+นี่คือ **รูปแบบเฉพาะ Agent Debugger** ไม่ใช่รูปแบบมาตรฐานของทุก Agent SDK รองรับไฟล์ v1 โดยตรง และมีตัวแปลง OTLP JSON แบบมีข้อจำกัดตามหัวข้อด้านบน
 
 ไฟล์หนึ่งมี envelope และรันได้หลายรายการ:
 
@@ -177,14 +186,3 @@ Day 7 ใช้ Brave/Chromium 155 บน Windows, i5-11400H, RAM ประม�
 5. ตรวจช่วงเวลาของ span อยู่ในรันและ parent; ไม่ห้ามงานที่ทับกัน
 
 เมื่อผิดจะแจ้งตำแหน่งฟิลด์และเหตุผล และไม่แสดง dataset ที่ตรวจไม่ผ่าน หากตัวอย่างหนึ่งไฟล์ผิดจะเข้า error state ทั้งชุด แก้ไฟล์แล้วกด "ลองโหลดใหม่" ได้ ไม่แสดงข้อมูลบางส่วนที่อาจทำให้เข้าใจผิด
-
-
-## หลักฐานและไฟล์หลัก
-
-- [DAY7.md](DAY7.md): ตารางสถานะรุ่นแรก ปัญหา/ผลกระทบ วิธีทำซ้ำ และ checklist ผู้ใช้ 10–15 นาที
-- [docs/day7-checks.json](docs/day7-checks.json): round-trip และ helper/UI measurements ดิบ พร้อมข้อจำกัดวิธีวัด
-- [docs/day7-preview.jpg](docs/day7-preview.jpg): QA 10,000 spans ค้น/เลือก s9995
-- DAY1–DAY6.md และ docs/day6-checks.json: หลักฐานก่อนหน้า แยก native flows ที่ยังไม่ได้ตรวจ
-- src/model.ts / validate.ts / import.ts: schema types/validation/local import; src/view.ts / search.ts / compare.ts: timeline/search/compare; src/storage.ts / workspace.ts / export.ts: persistence/delete/export; src/App.tsx และ styles.css: UI
-
-Day 7 ปิดงานรุ่นแรกภายในขอบเขตนี้ ไม่เริ่ม backend/login/live logs/AI/virtualization หรือ deployment ต่อโดยอัตโนมัติ

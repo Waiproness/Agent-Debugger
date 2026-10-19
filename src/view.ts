@@ -7,9 +7,8 @@ export function duration(start: string, end: string | null): string {
   return end === null ? 'ยังไม่จบ' : seconds(Date.parse(end) - Date.parse(start));
 }
 export function recordedEnd(run: Run): number {
-  return run.ended_at === null
-    ? Math.max(Date.parse(run.started_at), ...run.spans.map(span => Date.parse(span.ended_at ?? span.started_at)))
-    : Date.parse(run.ended_at);
+  if (run.ended_at !== null) return Date.parse(run.ended_at);
+  return run.spans.reduce((end, span) => Math.max(end, Date.parse(span.ended_at ?? span.started_at)), Date.parse(run.started_at));
 }
 export function spanDepths(spans: readonly Span[]): Map<string, number> {
   const children = new Map<string | null, string[]>();

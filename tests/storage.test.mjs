@@ -10,16 +10,29 @@ const documents = await Promise.all(['success', 'tool-error', 'parallel-nested']
 const entries = documents.map((doc, index) => ({ run: doc.runs[0], filename: `source-${index}.json` }));
 async function rawSnapshot(factory, value, write = false) {
   const db = await new Promise((resolve, reject) => {
-    const request = factory.open(DATABASE_NAME, 1);
+    const request = factory.open(DATABASE_NAME);
     request.onsuccess = () => resolve(request.result);
     request.onerror = () => reject(request.error);
   });
   try {
     return await new Promise((resolve, reject) => {
-      const tx = db.transaction('workspace', write ? 'readwrite' : 'readonly');
+      const tx = db.transaction(['workspace', 'runs'], write ? 'readwrite' : 'readonly');
       const store = tx.objectStore('workspace');
-      const request = write ? store.put(value, 'runs') : store.get('runs');
-      tx.oncomplete = () => resolve(request.result);
+      const records = tx.objectStore('runs');
+      let result;
+      if (write) {
+        records.clear();
+        for (const entry of value.entries) records.put(entry);
+        const { entries, ...meta } = value;
+        store.put({ ...meta, ids: entries.map(entry => entry.run.id) }, 'runs');
+        result = value;
+      } else {
+        const meta = store.get('runs'), all = records.getAll();
+        let ready = 0;
+        const loaded = () => { if (++ready === 2) { const { ids, ...data } = meta.result; const byId = new Map(all.result.map(entry => [entry.run.id, entry])); result = { ...data, entries: ids.map(id => byId.get(id)) }; } };
+        meta.onsuccess = loaded; all.onsuccess = loaded;
+      }
+      tx.oncomplete = () => resolve(result);
       tx.onabort = () => reject(tx.error);
     });
   } finally { db.close(); }
@@ -83,7 +96,7 @@ test('IndexedDB unavailable/open failure rejects without changing input; retry o
   assert.deepEqual(await restoreRuns(factory), entries);
 });
 for (const [name, mutate] of [
-  ['unsupported version', snapshot => { snapshot.storage_version = 2; }],
+  ['unsupported version', snapshot => { snapshot.storage_version = STORAGE_VERSION + 1; }],
   ['corrupt log', snapshot => { snapshot.entries[0].run.spans[0].parent_id = 'missing'; }],
   ['corrupt provenance', snapshot => { snapshot.entries[0].filename = null; }],
   ['duplicate stored IDs', snapshot => { snapshot.entries.push(structuredClone(snapshot.entries[0])); }],
